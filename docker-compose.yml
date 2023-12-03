@@ -102,7 +102,7 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=traefik_traefik-public"
         - "traefik.http.routers.prometheus.entrypoints=websecure"
-        - "traefik.http.routers.prometheus.rule=Host(`grafana.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN:-localhost}`)"
         - "traefik.http.routers.prometheus.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
