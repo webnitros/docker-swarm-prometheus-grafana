@@ -60,6 +60,7 @@ scrape_configs:
         - https://www.githubstatus.com
         - https://status.aws.amazon.com
         - https://azure.microsoft.com/en-us/status
+        - https://fandeco.ru
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
