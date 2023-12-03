@@ -13,13 +13,13 @@ services:
       - traefik_traefik-public
     deploy:
       mode: global
-    labels:
-        - "traefik.enable=true"
-        - "traefik.docker.network=traefik_traefik-public"
-        - "traefik.http.routers.cadvisor.entrypoints=websecure"
-        - "traefik.http.routers.cadvisor.rule=Host(`cadvisor.${DOMAIN:-localhost}`)"
-        - "traefik.http.routers.cadvisor.tls.certresolver=letsencryptresolver"
-        - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
+      labels:
+          - "traefik.enable=true"
+          - "traefik.docker.network=traefik_traefik-public"
+          - "traefik.http.routers.cadvisor.entrypoints=websecure"
+          - "traefik.http.routers.cadvisor.rule=Host(`cadvisor.${DOMAIN:-localhost}`)"
+          - "traefik.http.routers.cadvisor.tls.certresolver=letsencryptresolver"
+          - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
 
   node-exporter:
     image: prom/node-exporter
