@@ -10,16 +10,16 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
     networks:
       - shared
-      - proxynet
+      - traefik_traefik-public
     deploy:
       mode: global
     labels:
         - traefik.frontend.rule=Host:cadvisor.${DOMAIN:-localhost}
         - traefik.enable=true
         - traefik.port=8080
-        - traefik.tags=proxynet
+        - traefik.tags=traefik_traefik-public
         - traefik.backend=cadvisor
-        - traefik.docker.network=proxynet
+        - traefik.docker.network=traefik_traefik-public
         - traefik.redirectorservice.frontend.entryPoints=http
 
   node-exporter:
@@ -61,7 +61,7 @@ services:
       - alertmanager:/alertmanager
     networks:
       - shared
-      - proxynet
+      - traefik_traefik-public
     deploy:
       replicas: 1
       placement:
@@ -71,9 +71,9 @@ services:
         - traefik.frontend.rule=Host:alertmanager.${DOMAIN:-localhost}
         - traefik.enable=true
         - traefik.port=9093
-        - traefik.tags=proxynet
+        - traefik.tags=traefik_traefik-public
         - traefik.backend=alertmanager
-        - traefik.docker.network=proxynet
+        - traefik.docker.network=traefik_traefik-public
         - traefik.redirectorservice.frontend.entryPoints=http
 
   prometheus:
@@ -94,7 +94,7 @@ services:
       - '--web.console.templates=/etc/prometheus/consoles'
     networks:
       - shared
-      - proxynet
+      - traefik_traefik-public
     deploy:
       placement:
         constraints:
@@ -103,9 +103,9 @@ services:
         - traefik.frontend.rule=Host:prometheus.${DOMAIN:-localhost}
         - traefik.enable=true
         - traefik.port=9090
-        - traefik.tags=proxynet
+        - traefik.tags=traefik_traefik-public
         - traefik.backend=prometheus
-        - traefik.docker.network=proxynet
+        - traefik.docker.network=traefik_traefik-public
         - traefik.redirectorservice.frontend.entryPoints=http
 
   grafana:
@@ -133,7 +133,7 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - PROMETHEUS_ENDPOINT=http://prometheus:9090
     networks:
-      - proxynet
+      - traefik_traefik-public
       - shared
     deploy:
       replicas: 1
@@ -144,19 +144,19 @@ services:
         - traefik.frontend.rule=Host:grafana.${DOMAIN:-localhost}
         - traefik.enable=true
         - traefik.port=3000
-        - traefik.tags=proxynet
+        - traefik.tags=traefik_traefik-public
         - traefik.backend=grafana
-        - traefik.docker.network=proxynet
+        - traefik.docker.network=traefik_traefik-public
         - traefik.redirectorservice.frontend.entryPoints=http
-  
+
 networks:
   shared:
     name: shared
     driver: overlay
-  proxynet:
-    name: proxynet
+  traefik_traefik-public:
+    name: traefik_traefik-public
     driver: overlay
-    #external: true
+    external: true
 
 volumes:
   promconfig: {}
