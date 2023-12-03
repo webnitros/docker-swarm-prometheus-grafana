@@ -68,13 +68,12 @@ services:
         constraints:
            - node.role==manager
       labels:
-        - traefik.frontend.rule=Host:alertmanager.${DOMAIN:-localhost}
-        - traefik.enable=true
-        - traefik.port=9093
-        - traefik.tags=traefik_traefik-public
-        - traefik.backend=alertmanager
-        - traefik.docker.network=traefik_traefik-public
-        - traefik.redirectorservice.frontend.entryPoints=http
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_traefik-public"
+        - "traefik.http.routers.alertmanager.entrypoints=websecure"
+        - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.alertmanager.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
 
   prometheus:
     image: prom/prometheus
@@ -100,13 +99,12 @@ services:
         constraints:
           - node.role==manager
       labels:
-        - traefik.frontend.rule=Host:prometheus.${DOMAIN:-localhost}
-        - traefik.enable=true
-        - traefik.port=9090
-        - traefik.tags=traefik_traefik-public
-        - traefik.backend=prometheus
-        - traefik.docker.network=traefik_traefik-public
-        - traefik.redirectorservice.frontend.entryPoints=http
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_traefik-public"
+        - "traefik.http.routers.prometheus.entrypoints=websecure"
+        - "traefik.http.routers.prometheus.rule=Host(`grafana.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.prometheus.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   grafana:
     image: grafana/grafana
@@ -141,13 +139,12 @@ services:
         constraints:
           - node.role==manager
       labels:
-        - traefik.frontend.rule=Host:grafana.${DOMAIN:-localhost}
-        - traefik.enable=true
-        - traefik.port=3000
-        - traefik.tags=traefik_traefik-public
-        - traefik.backend=grafana
-        - traefik.docker.network=traefik_traefik-public
-        - traefik.redirectorservice.frontend.entryPoints=http
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_traefik-public"
+        - "traefik.http.routers.grafana.entrypoints=websecure"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.grafana.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
 networks:
   shared:
